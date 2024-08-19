@@ -12,8 +12,8 @@ var ajaxCall = (key, url, prompt) => {
         temperature: 0.5,
       }),
       headers: {
-         "Content-Type": "application/json",
-        Authorization: `Bearer ${key}`,
+        Content-Type: "application/json",
+        Authorization: "Bearer ${key}",
         OpenAI-Organization: "org-Xo5MwgEGDyyeNSPWA480DN3f",
       },
       crossDomain: true,

@@ -6,15 +6,14 @@ var ajaxCall = (key, url, prompt) => {
       dataType: "json",
       data: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [{"role": "user", "content": prompt}],
-        //prompt: prompt,
-        max_tokens: 1000,
+        message: [{"role": "user", "content": prompt}],
+        max_tokens: 1024,
         n: 1,
         temperature: 0.5,
       }),
       headers: {
         "Content-Type": "application/json",
-        "api-key": key,
+        Authorization: `Bearer ${key}`,
       },
       crossDomain: true,
       success: function (response, status, xhr) {
@@ -31,29 +30,6 @@ var ajaxCall = (key, url, prompt) => {
 
 const url = "https://api.openai.com/v1/chat/completions";
 
-const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
-  let attempt = 0;
-
-  while (attempt < maxRetries) {
-      try {
-          return await ajaxCall(apiKey, url, prompt);
-      } catch (error) {
-          if (error.status === 429) {
-              const waitTime = Math.pow(2, attempt) * 1000;
-              console.warn(`Rate limit exceeded. Retrying in ${waitTime} ms...`);
-              await new Promise(resolve => setTimeout(resolve, waitTime));
-              attempt++;
-          } else {
-              throw error;
-          }
-      }
-  }
-
-  throw new Error('Max retries exceeded');
-};
-
-
-
 (function () {
   const template = document.createElement("template");
   template.innerHTML = `
@@ -63,15 +39,14 @@ const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
       </div>
     `;
   class MainWebComponent extends HTMLElement {
-    async post(apiKey, prompt) {
-      try {
-        const { response } = await makeRequestWithRetry(apiKey, prompt);
-        console.log(response.choices[0].message.content);
-        return response.choices[0].message.content;
-      } catch (error) {
-        console.error("Request failed:", error);
-        throw error;
-      }
+    async post(apiKey, endpoint, prompt) {
+      const { response } = await ajaxCall(
+        apiKey,
+        url,
+        prompt
+      );
+      console.log(response.choices[0].text);
+      return response.choices[0].text;
     }
   }
   customElements.define("custom-widget", MainWebComponent);

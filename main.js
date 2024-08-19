@@ -55,4 +55,4 @@ const url = "https://api.openai.com/v1/chat/completions";
     }
   }
   customElements.define("custom-widget", MainWebComponent);
-})();
+});

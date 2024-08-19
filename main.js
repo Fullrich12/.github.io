@@ -63,9 +63,9 @@ const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
       </div>
     `;
   class MainWebComponent extends HTMLElement {
-    async post(apiKey, prompt) {
+    async post(apiKey, message) {
       try {
-        const { response } = await makeRequestWithRetry(apiKey, prompt);
+        const { response } = await makeRequestWithRetry(apiKey, message);
         console.log(response.choices[0].message.content);
         return response.choices[0].message.content;
       } catch (error) {

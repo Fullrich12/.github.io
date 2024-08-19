@@ -29,6 +29,28 @@ var ajaxCall = (key, url, prompt) => {
 };
 
 const url = "https://api.openai.com/v1/chat/completions";
+const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
+  let attempt = 0;
+
+  while (attempt < maxRetries) {
+      try {
+          return await ajaxCall(apiKey, url, prompt);
+      } catch (error) {
+          if (error.status === 429) {
+              const waitTime = Math.pow(2, attempt) * 1000;
+              console.warn(`Rate limit exceeded. Retrying in ${waitTime} ms...`);
+              await new Promise(resolve => setTimeout(resolve, waitTime));
+              attempt++;
+          } else {
+              throw error;
+          }
+      }
+  }
+
+  throw new Error('Max retries exceeded');
+};
+
+
 
 (function () {
   const template = document.createElement("template");
@@ -40,13 +62,14 @@ const url = "https://api.openai.com/v1/chat/completions";
     `;
   class MainWebComponent extends HTMLElement {
     async post(apiKey, prompt) {
-      const { response } = await ajaxCall(
-        apiKey,
-        url,
-        prompt
-      );
-      console.log(response.choices[0].text);
-      return response.choices[0].text;
+      try {
+        const { response } = await makeRequestWithRetry(apiKey, prompt);
+        console.log(response.choices[0].message.content);
+        return response.choices[0].message.content;
+      } catch (error) {
+        console.error("Request failed:", error);
+        throw error;
+      }
     }
   }
   customElements.define("custom-widget", MainWebComponent);

@@ -14,10 +14,7 @@ var ajaxCall = (key, url, prompt) => {
         "role": "user",
         "content": prompt,
       }
-        max_tokens: 1024,
-        n: 1,
-        temperature: 0.5,
-      }),
+      ),
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${key}`,

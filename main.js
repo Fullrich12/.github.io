@@ -13,8 +13,7 @@ var ajaxCall = (key, url, prompt) => {
       {
         "role": "user",
         "content": prompt,
-      }
-      ),
+      }),
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${key}`,

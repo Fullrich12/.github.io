@@ -39,7 +39,7 @@ const url = "https://api.openai.com/v1/chat/completions";
       </div>
     `;
   class MainWebComponent extends HTMLElement {
-    async post(apiKey, endpoint, prompt) {
+    async post(apiKey, prompt) {
       const { response } = await ajaxCall(
         apiKey,
         url,

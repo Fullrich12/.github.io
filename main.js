@@ -6,14 +6,10 @@ var ajaxCall = (key, url, prompt) => {
       dataType: "json",
       data: JSON.stringify({
         model: "gpt-4o-mini",
-        message: {
-        "role": "system",
-        "content": "You are a helpful assistant."
-      },
-      {
+        message: [{
         "role": "user",
         "content": prompt,
-      }),
+      }]),
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${key}`,

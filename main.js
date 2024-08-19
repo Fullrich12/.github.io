@@ -14,6 +14,7 @@ var ajaxCall = (key, url, prompt) => {
       headers: {
          "Content-Type": "application/json",
         Authorization: `Bearer ${key}`,
+        OpenAI-Organization: "org-Xo5MwgEGDyyeNSPWA480DN3f",
       },
       crossDomain: true,
       success: function (response, status, xhr) {

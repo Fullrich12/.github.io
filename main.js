@@ -6,7 +6,7 @@ var ajaxCall = (key, url, prompt) => {
       dataType: "json",
       data: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [{"role": "user", "content": "List advantages of AI"}],
+        messages: [{"role": "user", "content": prompt}],
         max_tokens: 1000,
         n: 1,
         temperature: 0.5,

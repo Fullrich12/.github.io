@@ -6,10 +6,11 @@ var ajaxCall = (key, url, prompt) => {
       dataType: "json",
       data: JSON.stringify({
         model: "gpt-4o-mini",
-        message: [{
-        "role": "user",
-        "content": prompt,
-      }]),
+        message: [{"role": "user", "content": "List advantages of AI"}],
+        max_tokens: 1024,
+        n: 1,
+        temperature: 0.5,
+      }),
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${key}`,
@@ -28,6 +29,28 @@ var ajaxCall = (key, url, prompt) => {
 };
 
 const url = "https://api.openai.com/v1/chat/completions";
+const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
+  let attempt = 0;
+
+  while (attempt < maxRetries) {
+      try {
+          return await ajaxCall(apiKey, url, prompt);
+      } catch (error) {
+          if (error.status === 429) {
+              const waitTime = Math.pow(2, attempt) * 1000;
+              console.warn(`Rate limit exceeded. Retrying in ${waitTime} ms...`);
+              await new Promise(resolve => setTimeout(resolve, waitTime));
+              attempt++;
+          } else {
+              throw error;
+          }
+      }
+  }
+
+  throw new Error('Max retries exceeded');
+};
+
+
 
 (function () {
   const template = document.createElement("template");
@@ -40,7 +63,7 @@ const url = "https://api.openai.com/v1/chat/completions";
   class MainWebComponent extends HTMLElement {
     async post(apiKey, prompt) {
       try {
-        const { response } = await ajaxCall(apiKey, url, prompt);
+        const { response } = await makeRequestWithRetry(apiKey, prompt);
         console.log(response.choices[0].message.content);
         return response.choices[0].message.content;
       } catch (error) {
@@ -50,4 +73,4 @@ const url = "https://api.openai.com/v1/chat/completions";
     }
   }
   customElements.define("custom-widget", MainWebComponent);
-});
+})();

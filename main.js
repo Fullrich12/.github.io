@@ -16,8 +16,8 @@ var ajaxCall = (key, url, prompt) => {
         "Authorization": `Bearer ${key}`,
       },
       crossDomain: true,
-      success: function (response, status, xhr) {
-        resolve({ response, status, xhr });
+      success: function (responseObj, status, xhr) {
+        resolve({ responseObj, status, xhr });
       },
       error: function (xhr, status, error) {
         const err = new Error('xhr error');

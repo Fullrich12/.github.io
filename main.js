@@ -6,8 +6,8 @@ var ajaxCall = (key, url, prompt) => {
       dataType: "json",
       data: JSON.stringify({
         model: "gpt-4o-mini",
-        message: [{"role": "user", content: "List advantages of AI"}],
-        max_tokens: 1024,
+        message: [{"role": "user", "content": "List advantages of AI"}],
+        max_tokens: 1000,
         n: 1,
         temperature: 0.5,
       }),
@@ -64,8 +64,9 @@ const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
     async post(apiKey, prompt) {
       try {
         const { response } = await makeRequestWithRetry(apiKey, prompt);
-        console.log(response.choices[0].message.content);
-        return response.choices[0].message.content;
+        console.log(responseObj.choices[0].message.content);
+        //string choices = responseObj.choices[0].message.content;
+        return responseObj.choices[0].message.content;
       } catch (error) {
         console.error("Request failed:", error);
         throw error;

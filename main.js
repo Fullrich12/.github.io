@@ -16,8 +16,8 @@ var ajaxCall = (key, url, prompt) => {
         "Authorization": `Bearer ${key}`,
       },
       crossDomain: true,
-      success: function (responseObj, status, xhr) {
-        resolve({ responseObj, status, xhr });
+      success: function (response, status, xhr) {
+        resolve({ response, status, xhr });
       },
       error: function (xhr, status, error) {
         const err = new Error('xhr error');
@@ -64,9 +64,9 @@ const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
     async post(apiKey, prompt) {
       try {
         const { response } = await makeRequestWithRetry(apiKey, prompt);
-        console.log(responseObj.choices[0].message.content);
+        console.log(response.choices[0].message.content);
         //string choices = responseObj.choices[0].message.content;
-        return responseObj.choices[0].message.content;
+        return response.choices[0].message.content;
       } catch (error) {
         console.error("Request failed:", error);
         throw error;

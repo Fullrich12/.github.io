@@ -10,7 +10,7 @@ var ajaxCall = (key, url, prompt) => {
         //Define message prompt is the promt given by the user
         messages: [{"role": "user", "content": prompt}],
         //limit maximum number of tokens, the higher the more data can get send
-        max_tokens: 2500,
+        max_tokens: 5000,
         n: 1,
         temperature: 0.4,
       }),

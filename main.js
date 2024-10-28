@@ -31,7 +31,8 @@ var ajaxCall = (key, url, prompt) => {
   });
 };
 
-const url = "https://api.openai.com/v1/chat/completions";
+//const url = "https://api.openai.com/v1/chat/completions";
+const url = "https://chatgpt-sweden-sl.openai.azure.com";
 const makeRequestWithRetry = async (apiKey, prompt, maxRetries = 5) => {
   let attempt = 0;
 

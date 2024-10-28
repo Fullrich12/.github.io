@@ -6,7 +6,7 @@ var ajaxCall = (key, url, prompt) => {
       dataType: "json",
       data: JSON.stringify({
         //Define model
-        model: "gpt-4o-mini-sl",
+        model: "gpt-4o-mini",
         //Define message prompt is the promt given by the user
         messages: [{"role": "user", "content": prompt}],
         //limit maximum number of tokens, the higher the more data can get send
